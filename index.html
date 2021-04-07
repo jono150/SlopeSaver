@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="main.css">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>The Slope Saver</title>  
+    </head>
+    <body>
+        <div id = "nav">
+            <h1 class = "nav">The Slope Saver</h1>
+            <h2 class = "nav"><a href="#abs">Abstract</a></h2>
+            <h2 class = "nav"><a href="#pic">Photo Galery</a></h2>
+            <h2 class = "nav"><a href="#cod">Code</a></h2>
+        </div>
+        <div id = "contain">
+            <img id="it" src = "Images/SlopeSaver.JPG">
+        </div>
+        <div class="holds">
+            <h1 class="Title" id = "abs">Abstract</h1>
+        </div>
+        <p>
+            Often when an elderly person is bound to a wheelchair, they feel unstable if the wheelchair reaches even a slight incline or decline. There are several non-electric wheelchair seat “stabilizers” which are cushions with added support. However, after speaking with Jono’s grandfather who uses a wheelchair, we learned that even these special cushions do not always do the trick. 
+        </p>
+        <p>
+            We wanted to create a high-tech solution to this problem by making a smart-cushion for a wheelchair. The cushion incorporates our knowledge of software and mechanical engineering. A chip/sensor on the cushion will sense tilt and trigger a motor to adjust accordingly. 
+        </p>
+        <p>
+            We have also spoken to an architect who works for Bergen County and we learned a lot about the wheelchair accessibility laws. We specifically designed the cushion to adjust to the steepest angles of wheelchair ramps. 
+        </p>
+        <p>
+            We used an accelerometer to detect the current angle of the wheelchair. We have a high torque motor to adjust to provide the movement to the cushion, a lead screw to convert that rotational motion into horizontal linear motion, and then two hinges to convert the linear motion into rotational of the entire cushion. In the code, we use exponential filtering to get smooth input values from the accelerometer, and a PID controller to get smooth movements from the cushion.
+        </p>
+        <div class="holds">
+            <h1 class="Title" id="pic">Photo Galery</h1>
+        </div>
+        <table>
+            <tr>
+                <td>
+                    <img class="img" src = "Images/AbiSaw1.JPG">
+                </td>
+                <td>
+                    <img class="img" src = "Images/AbiSaw2.JPG">
+                </td>
+                <td>
+                    <img class="img" src = "Images/AbiSaw3.JPG">
+                </td>
+                <td>
+                    <img class="img" src = "Images/PrototypeInside.JPG">
+                </td>
+            </tr>
+        </table>
+        <div class="holds">
+            <h1 class="Title" id="cod">Code</h1>
+        </div>
+        <a href="https://github.com/jono150/EverythinButTheKitchenSink.git" target="_blank">Link to Github</a>
+        <p id = "code">#include &ltWire.h&gt<br><br>#include &ltLiquidCrystal_I2C.h&gt<br><br><br><br><br>LiquidCrystal_I2C lcd(0x27,20,4);<br><br><br><br><br>//PIN VARIABLES<br><br>int pinDrain = 2;     //The pin going to the solenoid that goes to the normal drain (for dirty water)<br><br>int pinRecycle = 4;   //The pin going to the solenoid that goes to the filter (for clean-ish water)<br><br>int pinTurb = A0;     //The pin going to the turbidity sensor<br><br>int pinPH = A1;       //The pin going to the pH sensor<br><br><br><br><br>//VALUE VARIABLES<br><br>double pH;<br><br>double turbidity;<br><br>boolean lightState;<br><br>boolean drainState;<br><br>boolean recycleState;<br><br><br><br><br>//PH SENSOR VALUES<br><br>#define Offset 0.00<br><br>#define samplingInterval 20<br><br>#define printInterval 400<br><br>#define ArrayLenth  40<br><br>int pHArray[ArrayLenth];<br><br>int pHArrayIndex=0;<br><br><br><br><br>void drainSolenoid(boolean state) {<br><br>  if (state == false) {<br><br>    digitalWrite(pinDrain, LOW);<br><br>  } else if (state == true) {<br><br>    digitalWrite(pinDrain, HIGH);<br><br>  }<br><br>}<br><br><br><br><br>void recycleSolenoid(boolean state) {<br><br>    if (state == false) {<br><br>    digitalWrite(pinRecycle, LOW);<br><br>  } else if (state == true) {<br><br>    digitalWrite(pinRecycle, HIGH);<br><br>  }<br><br>}<br><br><br><br><br>void updateLCD() {<br><br>  lcd.setCursor(2,3);<br><br>  <br><br>  if (drainState == false) {<br><br>    lcd.print(&quot CLOSED&quot );<br><br>  } else if (drainState == true) {<br><br>    lcd.print(&quot OPEN  &quot );<br><br>  }<br><br><br><br><br>  lcd.setCursor(12,3);<br><br><br><br><br>  if (recycleState == false) {<br><br>    lcd.print(&quot CLOSED&quot );<br><br>  } else if (recycleState == true) {<br><br>    lcd.print(&quot OPEN  &quot );<br><br>  }<br><br>}<br><br><br><br><br>This is from the pH code:<br><br>double avergearray(int* arr, int number){<br><br>  int i;<br><br>  int max,min;<br><br>  double avg;<br><br>  long amount=0;<br><br>  if(number&lt=0){<br><br>    Serial.println(&quot Error number for the array to avraging!/n&quot );<br><br>    return 0;<br><br>  }<br><br>  if(number&lt5){   //less than 5, calculated directly statistics<br><br>    for(i=0;i&ltnumber;i++){<br><br>      amount+=arr[i];<br><br>    }<br><br>    avg = amount/number;<br><br>    return avg;<br><br>  }else{<br><br>    if(arr[0]&ltarr[1]){<br><br>      min = arr[0];max=arr[1];<br><br>    }<br><br>    else{<br><br>      min=arr[1];max=arr[0];<br><br>    }<br><br>    for(i=2;i&ltnumber;i++){<br><br>      if(arr[i]&ltmin){<br><br>        amount+=min;        //arr&ltmin<br><br>        min=arr[i];<br><br>      }else {<br><br>        if(arr[i]&gtmax){<br><br>          amount+=max;    //arr&gtmax<br><br>          max=arr[i];<br><br>        }else{<br><br>          amount+=arr[i]; //min&lt=arr&lt=max<br><br>        }<br><br>      }//if<br><br>    }//for<br><br>    avg = (double)amount/(number-2);<br><br>  }//if<br><br>  return avg;<br><br>}<br><br><br><br><br>void setup() {<br><br>  Serial.begin(9600);<br><br>  <br><br>  //Pin Declaration<br><br>  pinMode(pinDrain, OUTPUT);<br><br>  pinMode(pinRecycle, OUTPUT);<br><br>  pinMode(pinTurb, INPUT);<br><br>  pinMode(pinPH, INPUT);<br><br>  <br><br>  //LCD setup procedure:<br><br>    lcd.init();<br><br>    lcd.backlight();<br><br>    lcd.clear();<br><br><br><br><br>      lcd.setCursor(0,0);<br><br>    lcd.print(&quot pH: &quot );<br><br>      lcd.setCursor(9,0);<br><br>    lcd.print(&quot Turb.: &quot );<br><br>      lcd.setCursor(4,1);<br><br>    lcd.print(&quot UV Light: &quot );<br><br>      lcd.setCursor(0,2);<br><br>    lcd.print(&quot Drain:&quot );<br><br>      lcd.setCursor(10,2);<br><br>    lcd.print(&quot Filter:&quot );<br><br>}<br><br><br><br><br>void loop() {<br><br>  <br><br>  //PH SENSOR CODE:<br><br>  static unsigned long samplingTime = millis();<br><br>  static unsigned long printTime = millis();<br><br>  static float pHValue,voltage;<br><br>  if(millis()-samplingTime &gt samplingInterval)<br><br>  {<br><br>      pHArray[pHArrayIndex++]=analogRead(pinPH);<br><br>      if(pHArrayIndex==ArrayLenth)pHArrayIndex=0;<br><br>      voltage = avergearray(pHArray, ArrayLenth)*5.0/1024;<br><br>      pHValue = 3.5*voltage+Offset;<br><br>      samplingTime=millis();<br><br>  }<br><br>  if(millis() - printTime &gt printInterval)   //Every 800 milliseconds, print a numerical, convert the state of the LED indicator<br><br>  {<br><br>  Serial.print(&quot Voltage:&quot );<br><br>        Serial.print(voltage,2);<br><br>        Serial.print(&quot     pH value: &quot );<br><br>  Serial.println(pHValue,2);<br><br>        printTime=millis();<br><br>  }<br><br><br><br><br>  lcd.setCursor(4,0);<br><br>  lcd.print(pHValue,1);<br><br><br><br><br>  //TURBIDITY SENSOR CODE<br><br>  double turbidity = map(analogRead(A0),1,811,10,1);<br><br>  Serial.print(&quot Turbidity: &quot );<br><br>  Serial.println(turbidity);<br><br>  <br><br>  lcd.setCursor(16,0);<br><br>  lcd.print(turbidity,1);<br><br><br><br><br>  if (round(turbidity)&lt10) {<br><br>    lcd.setCursor(19,0);<br><br>    lcd.print(&quot  &quot );<br><br>  }<br><br>  delay(10);<br><br>  <br><br>  //SOLENOID CONTROL<br><br><br><br><br>  if (turbidity&lt4 &amp&amp  pH&lt8 &amp&amp  pH&gt6) {<br><br>    drainSolenoid(false);<br><br>    recycleSolenoid(true);<br><br>  } else {<br><br>    drainSolenoid(true);<br><br>    recycleSolenoid(false);<br><br>  }<br><br><br><br><br>  updateLCD();<br><br>}<br>
+        </p>
+  </body>
+</html>
+
+

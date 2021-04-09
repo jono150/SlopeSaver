@@ -12,6 +12,7 @@
 }
 .nav{
     display: inline;
+    vertical-align: top;
 }
 a{
     text-decoration: none;
@@ -32,12 +33,16 @@ a{
 }
 td{
     width: 25%;
+    border: .5vh solid grey;
 }
 table{
     background-color: black;
 }
 .img{
     width: 100%;
+}
+#navPic{
+    height: 6vh;
 }
 #contain{
     width: 100vw;

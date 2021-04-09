@@ -12,7 +12,7 @@
 }
 .nav{
     display: inline;
-    vertical-align: top;
+    vertical-align: super;
 }
 a{
     text-decoration: none;

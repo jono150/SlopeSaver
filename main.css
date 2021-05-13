@@ -3,21 +3,24 @@
     margin: 0;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     background: black;
-    height: 6vh;
+    height: 3vw;
     color: white;
-    margin: 0;
     padding: 0;
 }
 .nav{
-    display: inline;
+    display: inline-flex;
     vertical-align: super;
 }
 a{
     text-decoration: none;
     color: white;
-    margin-left: 5%;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    margin-left: 5vw;
+    font-size: 1.8vw;
 }
 .Title{
     display: inline;
@@ -25,7 +28,7 @@ a{
     top: 0;
     font-family: serif;
     text-align: center;
-    font-size: 5vh;
+    font-size: 3vw;
     color: white;
     margin-bottom: 0;
     margin-top: 0;
@@ -42,14 +45,28 @@ table{
     width: 100%;
 }
 #navPic{
-    height: 6vh;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    height: 3vw;
+    align-self: center;
+}
+h1{
+    top: 0;
+    margin: 0;
+    padding: 0;
+}
+h2{
+    top: 0;
+    margin: 0;
+    padding: 0;
 }
 #contain{
     width: 100vw;
     background-image: url(Images/SlopeSaverOpen.JPG);
     background-size: cover;
     text-align: center;
-    height: 94vh;
+    height: 100vh;
 }
 span{
     font-size: 12vw;
@@ -70,7 +87,7 @@ body{
     margin:0;
     padding:0;
     margin-bottom: 5%;
-    margin-top: 6vh;
+    margin-top: 3vw;
 }
 p{
     font-size: 2vw;

@@ -65,18 +65,20 @@ h2{
     width: 100vw;
     background-image: url(Images/SlopeSaverOpen.JPG);
     background-size: cover;
+    background-position: center;
     text-align: center;
     height: 100vh;
 }
 span{
     font-size: 12vw;
     display: block;
+    color: white;
     padding-top: 30vh;
 }
 .holds{
     text-align: center;
     position: sticky;
-    top: 6vh;
+    top: 3vw;
     width: 100%;
     height: auto;
     margin:0;
